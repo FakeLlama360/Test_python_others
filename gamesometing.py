@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 
+
 #define FPS
 clock = pygame.time.Clock()
 fps = 60
@@ -53,9 +54,21 @@ class Spaceship(pygame.sprite.Sprite):
         if self.health_remaining > 0:
             pygame.draw.rect(screen, green, (self.rect.x, (self.rect.bottom + 10), int(self.rect.width * (self.health_remaining / self.health_start)), 15))
 
+#create bullet class
+class Bullets(pygame.sprite.Sprite):
+    def __init__(self, x, y,):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("img/bullet.png")
+        self.rect = self.image.get_rect()
+        self.rect.center = [x, y]
+
+    def update(self):
+        self.rect.y -= 5
+
+
 #create sprite groups
 spaceship_group = pygame.sprite.Group()
-
+bullet_group = pygame.sprite.Group()
 
 #create player 
 spaceship = Spaceship(int(screen_width / 2), screen_height - 100, 3)
@@ -81,7 +94,11 @@ while run:
     spaceship.update()
 
     #update sprite groups
+    bullet_group.update()
+
+    #draw sprite groups
     spaceship_group.draw(screen)
+    bullet_group.draw(screen)
 
 
     pygame.display.update()
