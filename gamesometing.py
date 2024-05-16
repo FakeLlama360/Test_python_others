@@ -1,5 +1,6 @@
 import pygame
 from pygame.locals import *
+import random
 
 
 #define FPS
@@ -80,6 +81,20 @@ class Bullets(pygame.sprite.Sprite):
         self.rect.y -= 5
         if self.rect.bottom < 0:
             self.kill()
+
+
+
+
+
+
+
+
+    class Aliens(pygame.sprite.Sprite):
+        def __init__(self, x, y,):
+            pygame.sprite.Sprite.__init__(self)
+            self.image = pygame.image.load("img/alien" + str(random.randint(1, 5)) + ".png")
+            self.rect = self.image.get_rect()
+            self.rect.center = [x, y]
 
 
 #create sprite groups
