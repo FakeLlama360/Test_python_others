@@ -36,10 +36,13 @@ class Spaceship(pygame.sprite.Sprite):
         self.rect.center = [x, y]
         self.health_start = health
         self.health_remaining = health
+        self.last_shot = pygame.time.get_ticks()
 
     def update(self):
         #set movement speed
         speed = 8
+        #set cooldown variable
+        cooldown = 500
 
         #get keypress
         key = pygame.key.get_pressed()
@@ -47,6 +50,17 @@ class Spaceship(pygame.sprite.Sprite):
             self.rect.x -= speed
         if key[pygame.K_RIGHT] and self.rect.right < screen_width:
             self.rect.x += speed
+
+
+        #recort current time
+        time_now = pygame.time.get_ticks()
+
+        #shoot
+        if key[pygame.K_SPACE] and time_now - self.last_shot > cooldown:
+            bullet = Bullets(self.rect.centerx, self.rect.top)
+            bullet_group.add(bullet)
+            self.last_shot = time_now
+
 
 
         #draw health bar
@@ -64,13 +78,15 @@ class Bullets(pygame.sprite.Sprite):
 
     def update(self):
         self.rect.y -= 5
+        if self.rect.bottom < 0:
+            self.kill()
 
 
 #create sprite groups
 spaceship_group = pygame.sprite.Group()
 bullet_group = pygame.sprite.Group()
 
-#create player 
+#create player
 spaceship = Spaceship(int(screen_width / 2), screen_height - 100, 3)
 spaceship_group.add(spaceship)
 
@@ -94,6 +110,10 @@ while run:
     spaceship.update()
 
     #update sprite groups
+    bullet_group.update()
+
+
+    #update Sprite groups
     bullet_group.update()
 
     #draw sprite groups
