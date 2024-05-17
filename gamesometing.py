@@ -63,7 +63,6 @@ class Spaceship(pygame.sprite.Sprite):
             self.last_shot = time_now
 
 
-
         #draw health bar
         pygame.draw.rect(screen, red, (self.rect.x, (self.rect.bottom + 10), self.rect.width, 15))
         if self.health_remaining > 0:
