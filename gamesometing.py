@@ -45,10 +45,6 @@ last_alien_shot = pygame.time.get_ticks()
 countdown = 3
 last_count = pygame.time.get_ticks()
 
-
-
-
-
 #define colours
 red = (255 ,0, 0)
 green = (0, 255, 0)
@@ -69,7 +65,6 @@ def draw_text(text, font, text_col, x, y):
 
 
 #create space ship class
-
 class Spaceship(pygame.sprite.Sprite):
     def __init__(self, x, y, health):
         pygame.sprite.Sprite.__init__(self)
