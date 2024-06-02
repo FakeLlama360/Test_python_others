@@ -3,11 +3,9 @@ from pygame import mixer
 from pygame.locals import *
 import random
 
-from pygame.sprite import Group 
-
 pygame.mixer.pre_init(44100, -16, 2, 512)
 mixer.init()
-
+pygame.init()
 
 #define FPS
 clock = pygame.time.Clock()
@@ -22,8 +20,8 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption('Space Invaders')
 
 #define fond
-font30 = pygame.font.SysFont('Constantia', 30)
-font40 = pygame.font.SysFont('Constantia', 40)
+font30 = pygame.font.SysFont('comicsans', 30, False, False)
+font40 = pygame.font.SysFont('comicsans', 40, False, False) 
 
 #load sound
 explosion_fx = pygame.mixer.Sound("img/img_explosion.wav")
@@ -44,6 +42,7 @@ alien_cooldown = 1000
 last_alien_shot = pygame.time.get_ticks()
 countdown = 3
 last_count = pygame.time.get_ticks()
+game_over = 0 #0 in no game over, 1plazer won -1 plazer lost
 
 #define colours
 red = (255 ,0, 0)
@@ -80,6 +79,7 @@ class Spaceship(pygame.sprite.Sprite):
         speed = 8
         #set cooldown variable
         cooldown = 500
+        game_over = 0
 
         #get keypress
         key = pygame.key.get_pressed()
@@ -111,6 +111,8 @@ class Spaceship(pygame.sprite.Sprite):
             self.kill()
             explosion = Explosion(self.rect.centerx, self.rect.centery, 3)
             explosion_group.add(explosion)
+            game_over = -1
+        return game_over
             
 
 #create bullet class
@@ -251,21 +253,33 @@ while run:
             alien_bullet_group.add(alien_bullet)
             last_alien_shot = time_now
 
+        if len(alien_group) == 0:
+            game_over = 1
 
-        #update spaceship
-        spaceship.update()
+        if game_over == 0:
 
-        #update Sprite groups
-        bullet_group.update()
-        alien_group.update()
-        alien_bullet_group.update()
+            #update spaceship
+            game_over = spaceship.update()
+
+            #update Sprite groups
+            bullet_group.update()
+            alien_group.update()
+            alien_bullet_group.update()
+        else:
+            if game_over == -1:
+                 draw_text('GAME OVER!', font40, white, int(screen_width / 2 -110), int(screen_height / 2 + 50))
+            if game_over == 1:
+                draw_text('YOU WIN!', font40, white, int(screen_width / 2 -110), int(screen_height / 2 + 50))
 
 
 
     if countdown > 0:
         draw_text('GET READY!', font40, white, int(screen_width / 2 -110), int(screen_height / 2 + 50))
-        draw_text(str(countdown), font40, white, int(screen_width / 2 -110), int(screen_height / 2 + 50))
-
+        draw_text(str(countdown), font40, white, int(screen_width / 2 -10),  int(screen_height / 2 + 100))
+        count_time = pygame.time.get_ticks()
+        if count_time - last_count > 1000:
+            countdown -= 1
+            last_count = count_time
 
     explosion_group.update()
 
