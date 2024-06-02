@@ -20,8 +20,8 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption('Space Invaders')
 
 #define fond
-font30 = pygame.font.SysFont('comicsans', 30, False, False)
-font40 = pygame.font.SysFont('comicsans', 40, False, False) 
+font30 = pygame.font.SysFont('costancia', 30, False, False)
+font40 = pygame.font.SysFont('costancia', 40, False, False) 
 
 #load sound
 explosion_fx = pygame.mixer.Sound("img/img_explosion.wav")
